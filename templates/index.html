@@ -23,13 +23,38 @@
 	</style>
 </head>
 <body>
-	<h1>Hello, Povyta!</h1>
+	<div id="rain"></div>
+	<div class="banner">
+		<div class="slider" style="--quantity: 8">
+			<div class="item" style="--position: 1"><img src="../img/fate.jpg" alt=""></div>
+			<div class="item" style="--position: 2"><img src="../img/iakym.jpg" alt=""></div>
+			<div class="item" style="--position: 3"><img src="../img/lamp.jpg" alt=""></div>
+			<div class="item" style="--position: 4"><img src="../img/find.jpeg" alt=""></div>
+			<div class="item" style="--position: 5"><img src="../img/kozhyn.jpeg" alt=""></div>
+			<div class="item" style="--position: 6"><img src="../img/vdng.jpeg" alt=""></div>
+			<div class="item" style="--position: 7"><img src="../img/melancholy.jpg" alt=""></div>
+			<div class="item" style="--position: 8"><img src="../img/park.jpg" alt=""></div>
+		</div>
+		<div class="content">
+			<h1 data-content="POVYTA">
+				POVYTA
+			</h1>
+			<div class="author">
+				<h2>Звільни</h2>
+				<p><a href="https://tunelink.to/OUTXa"><b>Посилання на трек</b></a></p>
+				<p>
+					<a href="https://send.monobank.ua/jar/55NvMKJW1E">Донать на авто для Азову!</a>
+				</p>
+			</div>
+			<div class="model" id="mask" style="background-image: url('../img/logo.png');"></div>
+		</div>
+	</div>
 
 
 <script>
 	function rain(){
 		let amount = 150;
-		let body = document.querySelector('body');
+		let body = document.querySelector('#rain');
 		let i = 1;
 		while(i < amount){
 			let drop = document.createElement('i');
