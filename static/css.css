@@ -1,0 +1,139 @@
+/* ===================================
+	0. Clear CSS
+====================================== */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+	margin:0;
+	padding:0;
+	border:0;
+	outline: none;
+	font-size:100%;
+	vertical-align:baseline;
+	background:transparent;
+	scroll-behavior: smooth;
+	text-wrap: pretty;
+}
+html{
+	overflow-x: hidden;
+}
+body {
+	line-height:1;
+}
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+	display:block;
+}
+nav ul,ul,ol {
+	list-style:none;
+}
+blockquote, q {
+	quotes:none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content:'';
+	content:none;
+}
+a {
+	margin:0;
+	padding:0;
+	font-size:100%;
+	outline: none;
+	vertical-align:baseline;
+	background:transparent;
+}
+ins {
+	background-color:#ff9;
+	color:#000;
+	text-decoration:none;
+}
+mark {
+	background-color:#ff9;
+	color:#000; 
+	font-style:italic;
+	font-weight:bold;
+}
+del {
+	text-decoration: line-through;
+}
+abbr[title], dfn[title] {
+	border-bottom:1px dotted;
+	cursor:help;
+}
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+}
+hr {
+	display:block;
+	height:1px;
+	border:0;   
+	border-top:1px solid #cccccc;
+	margin:1em 0;
+	padding:0;
+}
+input, select {
+	vertical-align:middle;
+}
+input:focus, textarea:focus
+{
+	outline: none;
+}
+
+/* ===================================
+	0. Index 3D
+====================================== */
+
+h1{
+	color: white;
+	font-size: 40px;
+}
+
+
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body{
+	max-height: 100vh;
+	background: #000;
+	overflow: hidden;
+}
+i{
+	position: fixed;
+	width: 1px;
+	height: 200px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	background: linear-gradient(45deg, #303841, transparent);
+	animation: animColorFulRain 5s linear infinite;
+}
+i:nth-child(3n+1){
+	background: linear-gradient(45deg, #303841, transparent);
+}
+i:nth-child(3n+2){
+	background: linear-gradient(45deg, #303841, transparent);
+}
+i:nth-child(3n+1){
+	background: linear-gradient(45deg, #303841, transparent);
+}
+@keyframes animColorFulRain{
+	0%{
+		filter: hue-rotate(0deg);
+		transform: translateY(-200px);
+	}
+	100%{
+		filter: hue-rotate(360deg);
+		transform: translateY(calc(100vh + 200px));
+	}
+}
