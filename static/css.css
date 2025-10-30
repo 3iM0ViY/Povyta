@@ -1,3 +1,4 @@
+
 /* ===================================
 	0. Clear CSS
 ====================================== */
@@ -24,9 +25,18 @@ time, mark, audio, video {
 }
 html{
 	overflow-x: hidden;
+	font-size: 16px;
 }
 body {
 	line-height:1;
+	background-color: #0a0615;
+/*	background-image:
+		repeating-linear-gradient(
+			to right, transparent 0 100px,
+			#babaca 100px 101px
+		);*/
+	max-height: 100vh;
+	overflow: hidden;
 }
 article,aside,details,figcaption,figure,
 footer,header,hgroup,menu,nav,section { 
@@ -50,6 +60,7 @@ a {
 	outline: none;
 	vertical-align:baseline;
 	background:transparent;
+	text-decoration: none;
 }
 ins {
 	background-color:#ff9;
@@ -90,30 +101,26 @@ input:focus, textarea:focus
 }
 
 /* ===================================
-	1. Index Top
+	1. Base Styles
 ====================================== */
 
 img{
 	border-radius: 8px;
+	max-width: 100%;
+	height: auto;
 }
 #maskparent {
-  background-repeat: no-repeat;
-  background-image: url("/mask.png");
+	background-repeat: no-repeat;
+	background-image: url("mask.png");
 }
 #mask {
-  filter: drop-shadow(0 0 0.75rem rgb(49, 11, 50));
+	filter: drop-shadow(0 0 0.75rem rgb(49, 11, 50));
 }
 
-/* Here is the rain */
-*{
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-body{
-	max-height: 100vh;
-	overflow: hidden;
-}
+/* ===================================
+	2. Rain Effect
+====================================== */
+
 i{
 	position: fixed;
 	width: 1px;
@@ -123,6 +130,7 @@ i{
 	background: linear-gradient(45deg, #303841, transparent);
 	animation: animColorFulRain 5s linear infinite;
 	z-index: 0;
+	pointer-events: none;
 }
 i:nth-child(3n+1){
 	background: linear-gradient(45deg, #303841, transparent);
@@ -130,7 +138,7 @@ i:nth-child(3n+1){
 i:nth-child(3n+2){
 	background: linear-gradient(45deg, #303841, transparent);
 }
-i:nth-child(3n+1){
+i:nth-child(3n+3){
 	background: linear-gradient(45deg, #303841, transparent);
 }
 @keyframes animColorFulRain{
@@ -145,7 +153,7 @@ i:nth-child(3n+1){
 }
 
 /* ===================================
-	1.1 3D carousel
+	3. 3D Carousel
 ====================================== */
 
 .banner{
@@ -173,15 +181,13 @@ i:nth-child(3n+1){
 		transform: perspective(1250px) rotateX(-22deg) rotateY(360deg);
 	}
 }
-
 .banner .slider {
 	--speed: 50s;
 	animation: autoRun var(--speed) linear infinite;
 }
 .banner .slider:hover {
-	--speed: 200s; /* slower rotation on hover */
+	--speed: 200s;
 }
-
 .banner .slider .item{
 	position: absolute;
 	inset: 0 0 0 0;
@@ -194,7 +200,6 @@ i:nth-child(3n+1){
 	height: 100%;
 	object-fit: cover;
 }
-
 .banner .slider .item {
 	transition: transform 0.3s ease;
 	transform-style: preserve-3d;
@@ -209,6 +214,9 @@ i:nth-child(3n+1){
 	cursor: pointer;
 }
 
+/* ===================================
+	4. Content Section
+====================================== */
 
 .banner .content{
 	position: absolute;
@@ -217,7 +225,7 @@ i:nth-child(3n+1){
 	transform: translateX(-50%);
 	width: min(1400px, 100vw);
 	height: max-content;
-	padding-bottom: 100px;
+	padding-bottom: clamp(50px, 10vh, 100px);
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
@@ -228,7 +236,7 @@ i:nth-child(3n+1){
 	position: relative;
 	font-family: "Fleur De Leah", cursive;
 	font-weight: 400;
-	font-size: 25em;
+	font-size: clamp(4em, 20vw, 25em);
 	line-height: 0.9em;
 	color: #25283B;
 	transition: color 0.9s ease, text-shadow 0.9s ease;
@@ -242,7 +250,6 @@ i:nth-child(3n+1){
 	color: transparent;
 	transition: opacity 0.9s ease;
 }
-/* glow on hover */
 .banner .content h1:hover {
 	color: #841010;
 	text-shadow:
@@ -250,22 +257,25 @@ i:nth-child(3n+1){
 		0 0 40px #69666f,
 		0 0 60px #8e44ad;
 }
-
 .banner .content .side_text{
 	font-family: "Yanone Kaffeesatz", sans-serif;
 	font-optical-sizing: auto;
-	font-weight: <weight>;
 	font-style: normal;	
 	text-align: right;
 	max-width: 300px;
 	color: #8a7790;
 	z-index: 100;
+	padding: 0 20px;
 }
 .banner .content h2{
-	font-size: 4em;
+	font-size: clamp(2em, 5vw, 4em);
+	margin-bottom: 0.5em;
+}
+.side_text p {
+	margin-bottom: 0.5em;
 }
 .side_text p a{
-	font-size: 2em;
+	font-size: clamp(1.2em, 3vw, 2em);
 	color: white;
 	transition: color 0.9s ease, text-shadow 0.9s ease;
 }
@@ -273,8 +283,6 @@ i:nth-child(3n+1){
 	color: #b088f9;
 	text-shadow: 0 0 10px #b088f9;
 }
-
-
 .banner .content .model{
 	width: 100%;
 	height: 88vh;
@@ -282,50 +290,244 @@ i:nth-child(3n+1){
 	bottom: 0;
 	left: 0;
 	z-index: 1;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
 }
 .model img{
-	width: 90%;
+	width: clamp(300px, 80%, 90%);
+	max-height: 88vh;
+	object-fit: contain;
 }
-@media screen and (max-width: 1023px) {
+
+/* ===================================
+	5. Responsive Design - Tablet
+====================================== */
+@media screen and (max-width: 1925px) {
+	.banner .slider{
+		width: 160px;
+		height: 200px;
+		top: 13%;
+	}
+
+	.banner .slider .item{
+		transform: 
+			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+			translateZ(350px);
+	}
+}
+
+
+@media screen and (max-width: 1024px) {
+	.banner{
+		height: 85vh;
+	}
 	.banner .slider{
 		width: 160px;
 		height: 200px;
 		left: calc(50% - 80px);
+		top: 15%;
 	}
+	
 	.banner .slider .item{
 		transform: 
 			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
 			translateZ(300px);
 	}
+	
 	.banner .content h1{
 		text-align: center;
 		width: 100%;
 		text-shadow: 0 10px 20px #000;
-		font-size: 7em;
+		font-size: clamp(5em, 15vw, 10em);
 	}
-	.banner .content .author{
-		color: #fff;
-		padding: 20px;
-		text-shadow: 0 10px 20px #000;
+	
+	.banner .content .side_text{
 		z-index: 2;
 		max-width: unset;
 		width: 100%;
-		text-align: center;
-		padding: 0 30px;
+	}
+	.banner .content h2{
+		font-size: clamp(2.5em, 6vw, 4em);
+	}
+	.model img{
+		width: 80%;
 	}
 }
+
+/* ===================================
+	6. Responsive Design - Mobile
+====================================== */
+
 @media screen and (max-width: 767px) {
+	html {
+		font-size: 14px;
+	}
+	.banner{
+		height: 75vh;
+	}
 	.banner .slider{
 		width: 100px;
 		height: 150px;
 		left: calc(50% - 50px);
+		top: 20%;
 	}
+	
 	.banner .slider .item{
 		transform: 
 			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
 			translateZ(180px);
 	}
+	
 	.banner .content h1{
-		font-size: 5em;
+		font-size: clamp(3em, 18vw, 6em);
+		padding: 0 10px;
+	}
+	.banner .content h1::after {
+		-webkit-text-stroke: 1px #d2d2d2;
+	}
+	.banner .content .side_text{
+		padding: 15px;
+	}
+	.banner .content h2{
+		font-size: clamp(2em, 8vw, 3em);
+	}
+	.side_text p a{
+		font-size: clamp(1em, 4vw, 1.5em);
+	}
+	.model img{
+		width: 75%;
+	}
+	.banner .content{
+		padding-bottom: 30px;
+	}
+	/* Reduce rain particles on mobile for performance */
+	i {
+		height: 150px;
+	}
+}
+
+/* ===================================
+	7. Responsive Design - Small Mobile
+====================================== */
+
+@media screen and (max-width: 480px) {
+	.banner{
+		height: 65vh;
+	}
+	.banner .slider{
+		width: 80px;
+		height: 120px;
+		left: calc(50% - 40px);
+		top: 20%;
+	}
+	
+	.banner .slider .item{
+		transform: 
+			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+			translateZ(140px);
+	}
+	.banner .content{
+		padding-bottom: 0;
+	}
+	.banner .content h1{
+		font-size: clamp(2.5em, 20vw, 5em);
+	}
+	.side_text{
+		text-align: end !important;
+	}
+	.banner .slider .item img {
+		border-radius: 6px;
+	}
+	.model img{
+		width: 95%;
+	}
+}
+
+/* ===================================
+	8. Landscape Mode - Mobile
+====================================== */
+
+@media screen and (max-height: 600px) and (orientation: landscape) {
+	.banner .slider{
+		width: 80px;
+		height: 120px;
+		left: calc(50% - 40px);
+		top: 15%;
+	}
+	
+	.banner .slider .item{
+		transform: 
+			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+			translateZ(140px);
+	}
+	.banner .content h1{
+		font-size: clamp(2em, 12vh, 4em);
+	}
+	.banner .content h2{
+		font-size: clamp(1.5em, 8vh, 2.5em);
+	}
+	.side_text p a{
+		font-size: clamp(0.9em, 5vh, 1.3em);
+	}
+	.banner .content{
+		flex-wrap: nowrap;
+		padding-bottom: 20px;
+	}
+	.model img{
+		width: 60%;
+		max-height: 70vh;
+	}
+}
+
+/* ===================================
+	9. High DPI Displays
+====================================== */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+	.banner .slider .item img {
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: crisp-edges;
+	}
+}
+
+/* ===================================
+	10. Reduced Motion
+====================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+	i {
+		animation: none;
+		opacity: 0.3;
+	}
+}
+
+/* ===================================
+	11. Touch Device Optimizations
+====================================== */
+
+@media (hover: none) and (pointer: coarse) {
+	.banner .slider .item:hover img {
+		transform: scale(1);
+		box-shadow: none;
+	}
+	.banner .content h1:hover {
+		color: #25283B;
+		text-shadow: none;
+	}
+	.banner .side_text a:hover {
+		color: white;
+		text-shadow: none;
+	}
+	/* Add tap highlight for better mobile UX */
+	.side_text a {
+		-webkit-tap-highlight-color: rgba(176, 136, 249, 0.3);
 	}
 }

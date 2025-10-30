@@ -2,26 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>Povyta</title>
 	<link rel="stylesheet" href="../static/css.css">
-	<style>
-		
-		*{
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		body{
-			background-color: #0a0615;
-			background-image:
-			repeating-linear-gradient(
-				to right, transparent 0 100px,
-				#babaca 100px 101px
-			),
-		}
-	</style>
-
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Fleur+De+Leah&family=Yanone+Kaffeesatz:wght@200..700&display=swap" rel="stylesheet">
@@ -30,14 +13,14 @@
 	<div id="rain"></div>
 	<div class="banner">
 		<div class="slider" style="--quantity: 8">
-			<div class="item" style="--position: 1"><img src="../img/fate.jpg" alt=""></div>
-			<div class="item" style="--position: 2"><img src="../img/iakym.jpg" alt=""></div>
-			<div class="item" style="--position: 3"><img src="../img/lamp.jpg" alt=""></div>
-			<div class="item" style="--position: 4"><img src="../img/find.jpeg" alt=""></div>
-			<div class="item" style="--position: 5"><img src="../img/kozhyn.jpeg" alt=""></div>
-			<div class="item" style="--position: 6"><img src="../img/vdng.jpeg" alt=""></div>
-			<div class="item" style="--position: 7"><img src="../img/melancholy.jpg" alt=""></div>
-			<div class="item" style="--position: 8"><img src="../img/park.jpg" alt=""></div>
+			<div class="item" style="--position: 1"><img src="../img/fate.jpg" alt="Fate"></div>
+			<div class="item" style="--position: 2"><img src="../img/iakym.jpg" alt="Iakym"></div>
+			<div class="item" style="--position: 3"><img src="../img/lamp.jpg" alt="Lamp"></div>
+			<div class="item" style="--position: 4"><img src="../img/find.jpeg" alt="Find"></div>
+			<div class="item" style="--position: 5"><img src="../img/kozhyn.jpeg" alt="Kozhyn"></div>
+			<div class="item" style="--position: 6"><img src="../img/vdng.jpeg" alt="VDNG"></div>
+			<div class="item" style="--position: 7"><img src="../img/melancholy.jpg" alt="Melancholy"></div>
+			<div class="item" style="--position: 8"><img src="../img/park.jpg" alt="Park"></div>
 		</div>
 		<div class="content">
 			<h1 data-content="Povyta">
@@ -45,21 +28,20 @@
 			</h1>
 			<div class="side_text">
 				<h2>Звільни</h2>
-				<p><a href="https://tunelink.to/OUTXa" target="_blank"><b>Посилання на трек</b></a></p>
+				<p><a href="https://tunelink.to/OUTXa" target="_blank" rel="noopener noreferrer"><b>Посилання на трек</b></a></p>
 				<p>
-					<a href="https://send.monobank.ua/jar/55NvMKJW1E" target="_blank">Донать на авто для Азову!</a>
+					<a href="https://send.monobank.ua/jar/55NvMKJW1E" target="_blank" rel="noopener noreferrer">Донать на авто для Азову!</a>
 				</p>
 			</div>
 			<div class="model" id="maskparent">
-				<img id="mask" src="../img/logo.png" alt="model logo">
+				<img id="mask" src="../img/logo.png" alt="Povyta Logo">
 			</div>
 		</div>
 	</div>
 
-
 <script>
 	function rain(){
-		let amount = 150;
+		let amount = window.innerWidth < 768 ? 50 : window.innerWidth < 1024 ? 100 : 150;
 		let body = document.querySelector('#rain');
 		let i = 1;
 		while(i < amount){
@@ -77,45 +59,54 @@
 		}
 	}
 	rain();
+
+	// Regenerate rain on window resize
+	let resizeTimer;
+	window.addEventListener('resize', () => {
+		clearTimeout(resizeTimer);
+		resizeTimer = setTimeout(() => {
+			document.querySelector('#rain').innerHTML = '';
+			rain();
+		}, 250);
+	});
 </script>
 <script>
-document.querySelectorAll('.banner .slider .item').forEach(item => {
-	const img = item.querySelector('img');
+// Only enable 3D tilt on non-touch devices
+if (!('ontouchstart' in window)) {
+	document.querySelectorAll('.banner .slider .item').forEach(item => {
+		const img = item.querySelector('img');
 
-	item.addEventListener('mousemove', e => {
-		const rect = item.getBoundingClientRect();
-		const x = e.clientX - rect.left;
-		const y = e.clientY - rect.top;
-		const rotateX = ((y / rect.height) - 0.5) * -20;
-		const rotateY = ((x / rect.width) - 0.5) * 20;
-		img.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-	});
+		item.addEventListener('mousemove', e => {
+			const rect = item.getBoundingClientRect();
+			const x = e.clientX - rect.left;
+			const y = e.clientY - rect.top;
+			const rotateX = ((y / rect.height) - 0.5) * -20;
+			const rotateY = ((x / rect.width) - 0.5) * 20;
+			img.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+		});
 
-	item.addEventListener('mouseleave', () => {
-		img.style.transform = 'scale(1) rotateX(0) rotateY(0)';
+		item.addEventListener('mouseleave', () => {
+			img.style.transform = 'scale(1) rotateX(0) rotateY(0)';
+		});
 	});
-});
+}
 </script>
 <script>
 (() => {
 	const slider = document.querySelector('.banner .slider');
 	if (!slider) return;
 
-	// base duration (seconds) — match your original CSS default
-	const baseDuration = 50;
-	const baseSpeed = 360 / baseDuration; // deg/s
+	// Adjust base duration based on screen size
+	const isMobile = window.innerWidth < 768;
+	const baseDuration = isMobile ? 40 : 50;
+	const baseSpeed = 360 / baseDuration;
 
-	// slower factor when hovered (0.25 => 4x slower)
 	const hoverFactor = 0.25;
-
-	// smoothing factor for speed changes (0..1). Larger -> faster
 	const speedSmoothing = 0.08;
 
-	// try to obtain the currently running CSS animation to read its progress
 	let startingAngle = 0;
 	const animations = slider.getAnimations ? slider.getAnimations() : [];
 	if (animations && animations.length) {
-		// find an animation that animates rotateY or the one named 'autoRun'
 		let anim = animations.find(a => (a.effect && a.effect.getKeyframes && a.effect.getKeyframes().some(k => {
 			return (k.transform && String(k.transform).includes('rotateY'));
 		}))) || animations[0];
@@ -124,72 +115,59 @@ document.querySelectorAll('.banner .slider .item').forEach(item => {
 			const timing = anim.effect.getTiming ? anim.effect.getTiming() : null;
 			const dur = timing && timing.duration ? timing.duration : baseDuration * 1000;
 			const ct = anim.currentTime != null ? anim.currentTime : 0;
-			// progress from 0..1
 			const progress = ((ct % dur) + dur) % dur / dur;
 			startingAngle = progress * 360;
 		} catch (e) {
-			// fallback: leave startingAngle = 0
 			startingAngle = 0;
 		}
 
-		// cancel CSS animation so we can control transform without restarts
 		try { anim.cancel(); } catch (e) { /* ignore */ }
 	} else {
-		// no CSS animation found — start at current computed transform if possible
 		const cs = getComputedStyle(slider).transform;
 		if (cs && cs !== 'none') {
-			// try to parse rotateY from matrix3d or matrix (best-effort)
 			const m = cs.match(/matrix3d\(([-0-9e., ]+)\)/) || cs.match(/matrix\(([-0-9e., ]+)\)/);
 			if (m) {
 				const vals = m[1].split(',').map(v => parseFloat(v));
-				// try a heuristic: when rotationX is small, angleY ~ atan2(m13, m11)
 				if (vals.length === 16) {
 					const m11 = vals[0], m13 = vals[2];
 					startingAngle = Math.atan2(m13, m11) * 180 / Math.PI;
 				} else if (vals.length === 6) {
-					// 2D matrix - no rotateY; ignore
 					startingAngle = 0;
 				}
 			}
 		}
 	}
 
-	// state
-	let angle = startingAngle; // current rotateY degrees
-	let currentSpeed = baseSpeed; // deg/s (smoothed)
-	let targetSpeed = baseSpeed; // deg/s
+	let angle = startingAngle;
+	let currentSpeed = baseSpeed;
+	let targetSpeed = baseSpeed;
 	let lastTs = null;
 
-	// ensure slider keeps the same perspective/rotateX baseline as CSS keyframes
-	// (match what you had in CSS: perspective(1250px) rotateX(-22deg))
 	const baseTransformPrefix = 'perspective(1250px) rotateX(-22deg)'; 
 
-	// Start RAF loop
 	function raf(ts) {
 		if (lastTs == null) lastTs = ts;
-		const dt = (ts - lastTs) / 1000; // seconds
+		const dt = (ts - lastTs) / 1000;
 		lastTs = ts;
 
-		// smooth speed toward target
 		currentSpeed += (targetSpeed - currentSpeed) * speedSmoothing;
-
-		// update angle
 		angle = (angle + currentSpeed * dt) % 360;
 
-		// apply transform
 		slider.style.transform = `${baseTransformPrefix} rotateY(${angle}deg)`;
 
 		requestAnimationFrame(raf);
 	}
 	requestAnimationFrame(raf);
 
-	// Hover handling: change targetSpeed smoothly
-	slider.addEventListener('mouseenter', () => {
-		targetSpeed = baseSpeed * hoverFactor;
-	});
-	slider.addEventListener('mouseleave', () => {
-		targetSpeed = baseSpeed;
-	});
+	// Only enable hover slowdown on non-touch devices
+	if (!('ontouchstart' in window)) {
+		slider.addEventListener('mouseenter', () => {
+			targetSpeed = baseSpeed * hoverFactor;
+		});
+		slider.addEventListener('mouseleave', () => {
+			targetSpeed = baseSpeed;
+		});
+	}
 })();
 </script>
 
