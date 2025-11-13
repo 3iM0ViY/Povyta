@@ -35,8 +35,6 @@ body {
 			to right, transparent 0 100px,
 			#babaca 100px 101px
 		);*/
-	max-height: 100vh;
-	overflow: hidden;
 }
 article,aside,details,figcaption,figure,
 footer,header,hgroup,menu,nav,section { 
@@ -155,6 +153,21 @@ i:nth-child(3n+3){
 /* ===================================
 	3. 3D Carousel
 ====================================== */
+.page_wrapper{
+	background-color: white;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.section_logo{
+	width: 98%;
+	height: 98%;
+	background-color: #0a0615;
+	border-radius: 80px;
+	overflow: hidden;
+}
 
 .banner{
 	width: 100%;
@@ -299,6 +312,26 @@ i:nth-child(3n+3){
 	max-height: 88vh;
 	object-fit: contain;
 }
+
+
+
+.section_music{
+	background-color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ===================================
 	5. Responsive Design - Tablet
