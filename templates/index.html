@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div id="rain"></div>
-	<div class="banner">
+	<section class="banner_section">
 		<div class="slider" style="--quantity: 8">
 			<div class="item" style="--position: 1"><img src="../img/fate.jpg" alt="Fate"></div>
 			<div class="item" style="--position: 2"><img src="../img/iakym.jpg" alt="Iakym"></div>
@@ -37,7 +37,25 @@
 				<img id="mask" src="../img/logo.png" alt="Povyta Logo">
 			</div>
 		</div>
-	</div>
+	</section>
+	
+	<section class="section_split">
+		<div class="reveal">
+			<div class="reveal_heading">
+				<span class="reveal_heading_left">Від колонок</span>
+				<span class="reveal_heading_right">до навушників...</span>
+			</div>
+		<h2 class="reveal_subheading">Girl with a Pearl Earring</h2>
+		<div class="reveal_media">
+			<img class="reveal_media-img" src="https://assets.codepen.io/204808/Meisje_met_de_parel.jpg" alt="">
+		</div>
+		</div>
+	</section>
+	<section class="section_next">
+		<div class="content">
+			<p>Johannes Vermeer was a Dutch painter who specialized in domestic interior scenes of middle-class life. He is considered one of the greatest painters of the Dutch Golden Age. During his lifetime, he was a moderately successful provincial genre painter, recognized in Delft and The Hague.</p>
+		</div>
+	</section>
 
 <script>
 	function rain(){
@@ -71,104 +89,174 @@
 	});
 </script>
 <script>
-// Only enable 3D tilt on non-touch devices
-if (!('ontouchstart' in window)) {
-	document.querySelectorAll('.banner .slider .item').forEach(item => {
-		const img = item.querySelector('img');
+	const rainEl = document.getElementById('rain');
+	const splitSection = document.querySelector('.section_split');
 
-		item.addEventListener('mousemove', e => {
-			const rect = item.getBoundingClientRect();
-			const x = e.clientX - rect.left;
-			const y = e.clientY - rect.top;
-			const rotateX = ((y / rect.height) - 0.5) * -20;
-			const rotateY = ((x / rect.width) - 0.5) * 20;
-			img.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				rainEl.classList.add('paused');
+				rainEl.classList.add('fade_top');
+			} else {
+				rainEl.classList.remove('paused');
+				rainEl.classList.remove('fade_top');
+			}
 		});
-
-		item.addEventListener('mouseleave', () => {
-			img.style.transform = 'scale(1) rotateX(0) rotateY(0)';
-		});
+	}, {
+		threshold: 0.3
 	});
-}
+
+	observer.observe(splitSection);
+
 </script>
 <script>
-(() => {
-	const slider = document.querySelector('.banner .slider');
-	if (!slider) return;
+	// Only enable 3D tilt on non-touch devices
+	if (!('ontouchstart' in window)) {
+		document.querySelectorAll('.banner .slider .item').forEach(item => {
+			const img = item.querySelector('img');
 
-	// Adjust base duration based on screen size
-	const isMobile = window.innerWidth < 768;
-	const baseDuration = isMobile ? 40 : 50;
-	const baseSpeed = 360 / baseDuration;
+			item.addEventListener('mousemove', e => {
+				const rect = item.getBoundingClientRect();
+				const x = e.clientX - rect.left;
+				const y = e.clientY - rect.top;
+				const rotateX = ((y / rect.height) - 0.5) * -20;
+				const rotateY = ((x / rect.width) - 0.5) * 20;
+				img.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+			});
 
-	const hoverFactor = 0.25;
-	const speedSmoothing = 0.08;
+			item.addEventListener('mouseleave', () => {
+				img.style.transform = 'scale(1) rotateX(0) rotateY(0)';
+			});
+		});
+	}
+</script>
+<script>
+	(() => {
+		const slider = document.querySelector('.banner .slider');
+		if (!slider) return;
 
-	let startingAngle = 0;
-	const animations = slider.getAnimations ? slider.getAnimations() : [];
-	if (animations && animations.length) {
-		let anim = animations.find(a => (a.effect && a.effect.getKeyframes && a.effect.getKeyframes().some(k => {
-			return (k.transform && String(k.transform).includes('rotateY'));
-		}))) || animations[0];
+		// Adjust base duration based on screen size
+		const isMobile = window.innerWidth < 768;
+		const baseDuration = isMobile ? 80 : 100;
+		const baseSpeed = 360 / baseDuration;
 
-		try {
-			const timing = anim.effect.getTiming ? anim.effect.getTiming() : null;
-			const dur = timing && timing.duration ? timing.duration : baseDuration * 1000;
-			const ct = anim.currentTime != null ? anim.currentTime : 0;
-			const progress = ((ct % dur) + dur) % dur / dur;
-			startingAngle = progress * 360;
-		} catch (e) {
-			startingAngle = 0;
-		}
+		const hoverFactor = 0.25;
+		const speedSmoothing = 0.08;
 
-		try { anim.cancel(); } catch (e) { /* ignore */ }
-	} else {
-		const cs = getComputedStyle(slider).transform;
-		if (cs && cs !== 'none') {
-			const m = cs.match(/matrix3d\(([-0-9e., ]+)\)/) || cs.match(/matrix\(([-0-9e., ]+)\)/);
-			if (m) {
-				const vals = m[1].split(',').map(v => parseFloat(v));
-				if (vals.length === 16) {
-					const m11 = vals[0], m13 = vals[2];
-					startingAngle = Math.atan2(m13, m11) * 180 / Math.PI;
-				} else if (vals.length === 6) {
-					startingAngle = 0;
+		let startingAngle = 0;
+		const animations = slider.getAnimations ? slider.getAnimations() : [];
+		if (animations && animations.length) {
+			let anim = animations.find(a => (a.effect && a.effect.getKeyframes && a.effect.getKeyframes().some(k => {
+				return (k.transform && String(k.transform).includes('rotateY'));
+			}))) || animations[0];
+
+			try {
+				const timing = anim.effect.getTiming ? anim.effect.getTiming() : null;
+				const dur = timing && timing.duration ? timing.duration : baseDuration * 1000;
+				const ct = anim.currentTime != null ? anim.currentTime : 0;
+				const progress = ((ct % dur) + dur) % dur / dur;
+				startingAngle = progress * 360;
+			} catch (e) {
+				startingAngle = 0;
+			}
+
+			try { anim.cancel(); } catch (e) { /* ignore */ }
+		} else {
+			const cs = getComputedStyle(slider).transform;
+			if (cs && cs !== 'none') {
+				const m = cs.match(/matrix3d\(([-0-9e., ]+)\)/) || cs.match(/matrix\(([-0-9e., ]+)\)/);
+				if (m) {
+					const vals = m[1].split(',').map(v => parseFloat(v));
+					if (vals.length === 16) {
+						const m11 = vals[0], m13 = vals[2];
+						startingAngle = Math.atan2(m13, m11) * 180 / Math.PI;
+					} else if (vals.length === 6) {
+						startingAngle = 0;
+					}
 				}
 			}
 		}
-	}
 
-	let angle = startingAngle;
-	let currentSpeed = baseSpeed;
-	let targetSpeed = baseSpeed;
-	let lastTs = null;
+		let angle = startingAngle;
+		let currentSpeed = baseSpeed;
+		let targetSpeed = baseSpeed;
+		let lastTs = null;
 
-	const baseTransformPrefix = 'perspective(1250px) rotateX(-22deg)'; 
+		const baseTransformPrefix = 'perspective(1250px) rotateX(-22deg)'; 
 
-	function raf(ts) {
-		if (lastTs == null) lastTs = ts;
-		const dt = (ts - lastTs) / 1000;
-		lastTs = ts;
+		function raf(ts) {
+			if (lastTs == null) lastTs = ts;
+			const dt = (ts - lastTs) / 1000;
+			lastTs = ts;
 
-		currentSpeed += (targetSpeed - currentSpeed) * speedSmoothing;
-		angle = (angle + currentSpeed * dt) % 360;
+			currentSpeed += (targetSpeed - currentSpeed) * speedSmoothing;
+			angle = (angle + currentSpeed * dt) % 360;
 
-		slider.style.transform = `${baseTransformPrefix} rotateY(${angle}deg)`;
+			slider.style.transform = `${baseTransformPrefix} rotateY(${angle}deg)`;
 
+			requestAnimationFrame(raf);
+		}
 		requestAnimationFrame(raf);
-	}
-	requestAnimationFrame(raf);
 
-	// Only enable hover slowdown on non-touch devices
-	if (!('ontouchstart' in window)) {
-		slider.addEventListener('mouseenter', () => {
-			targetSpeed = baseSpeed * hoverFactor;
-		});
-		slider.addEventListener('mouseleave', () => {
-			targetSpeed = baseSpeed;
-		});
-	}
-})();
+		// Only enable hover slowdown on non-touch devices
+		if (!('ontouchstart' in window)) {
+			slider.addEventListener('mouseenter', () => {
+				targetSpeed = baseSpeed * hoverFactor;
+			});
+			slider.addEventListener('mouseleave', () => {
+				targetSpeed = baseSpeed;
+			});
+		}
+	})();
+</script>
+<script>
+	const reveal = document.querySelector(".reveal");
+
+let ticking = false;
+
+function power4In(t) {
+  return Math.pow(t, 4);
+}
+
+function update() {
+  const rect = reveal.getBoundingClientRect();
+  const windowHeight = window.innerHeight;
+
+  // When top of element hits top of viewport
+  const start = 0;
+
+  // When bottom of element hits top of viewport
+  const end = rect.height;
+
+  // How far we've scrolled through the element
+  let progress = (start - rect.top) / (end);
+
+  // Clamp between 0 and 1
+  progress = Math.max(0, Math.min(1, progress));
+
+  const eased = power4In(progress);
+
+  reveal.style.setProperty("--progress", progress);
+  reveal.style.setProperty("--sub-opacity", eased);
+  reveal.style.setProperty("--sub-scale", 0.25 + progress);
+
+  ticking = false;
+}
+
+function onScroll() {
+  if (!ticking) {
+    requestAnimationFrame(update);
+    ticking = true;
+  }
+}
+
+window.addEventListener("scroll", onScroll);
+window.addEventListener("resize", update);
+
+// Initial run
+update();
+
+
 </script>
 
 </body>

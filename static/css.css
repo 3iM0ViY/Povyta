@@ -36,7 +36,6 @@ body {
 			#babaca 100px 101px
 		);*/
 	max-height: 100vh;
-	overflow: hidden;
 }
 article,aside,details,figcaption,figure,
 footer,header,hgroup,menu,nav,section { 
@@ -151,19 +150,41 @@ i:nth-child(3n+3){
 		transform: translateY(calc(100vh + 200px));
 	}
 }
+#rain.paused i{
+	animation-play-state: paused;
+}
+#rain{
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 0;
+	transition: opacity 0.6s ease;
+	height: 40vh;
+}
+/* gradient fade */
+#rain.fade_top{
+	mask-image: linear-gradient(to top, 
+	transparent 0%, 
+	rgba(0,0,0,0.4) 30%, 
+	black 60%);
+	-webkit-mask-image: linear-gradient(to top, 
+	transparent 0%, 
+	rgba(0,0,0,0.4) 30%, 
+	black 60%);
+}
 
 /* ===================================
 	3. 3D Carousel
 ====================================== */
 
-.banner{
+.banner_section{
+	display: block;
 	width: 100%;
 	height: 100vh;
 	text-align: center;
-	overflow: hidden;
 	position: relative;
 }
-.banner .slider{
+.banner_section .slider{
 	position: absolute;
 	width: 200px;
 	height: 300px;
@@ -181,34 +202,34 @@ i:nth-child(3n+3){
 		transform: perspective(1250px) rotateX(-22deg) rotateY(360deg);
 	}
 }
-.banner .slider {
+.banner_section .slider {
 	--speed: 50s;
 	animation: autoRun var(--speed) linear infinite;
 }
-.banner .slider:hover {
+.banner_section .slider:hover {
 	--speed: 200s;
 }
-.banner .slider .item{
+.banner_section .slider .item{
 	position: absolute;
 	inset: 0 0 0 0;
 	transform: 
 		rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
 		translateZ(550px);
 }
-.banner .slider .item img{
+.banner_section .slider .item img{
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 }
-.banner .slider .item {
+.banner_section .slider .item {
 	transition: transform 0.3s ease;
 	transform-style: preserve-3d;
 }
-.banner .slider .item img {
+.banner_section .slider .item img {
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 	border-radius: 10px;
 }
-.banner .slider .item:hover img {
+.banner_section .slider .item:hover img {
 	transform: scale(1.1) rotateX(10deg) rotateY(10deg);
 	box-shadow: 0 20px 40px rgba(63, 5, 166, 0.4);
 	cursor: pointer;
@@ -218,7 +239,7 @@ i:nth-child(3n+3){
 	4. Content Section
 ====================================== */
 
-.banner .content{
+.banner_section .content{
 	position: absolute;
 	bottom: 0;
 	left: 50%;
@@ -232,7 +253,7 @@ i:nth-child(3n+3){
 	align-items: center;
 	z-index: 1;
 }
-.banner .content h1 {
+.banner_section .content h1 {
 	position: relative;
 	font-family: "Fleur De Leah", cursive;
 	font-weight: 400;
@@ -241,7 +262,7 @@ i:nth-child(3n+3){
 	color: #25283B;
 	transition: color 0.9s ease, text-shadow 0.9s ease;
 }
-.banner .content h1::after {
+.banner_section .content h1::after {
 	position: absolute;
 	inset: 0;
 	content: attr(data-content);
@@ -250,14 +271,14 @@ i:nth-child(3n+3){
 	color: transparent;
 	transition: opacity 0.9s ease;
 }
-.banner .content h1:hover {
+.banner_section .content h1:hover {
 	color: #841010;
 	text-shadow:
 		0 0 20px #c9b6b6,
 		0 0 40px #69666f,
 		0 0 60px #8e44ad;
 }
-.banner .content .side_text{
+.banner_section .content .side_text{
 	font-family: "Yanone Kaffeesatz", sans-serif;
 	font-optical-sizing: auto;
 	font-style: normal;	
@@ -267,7 +288,7 @@ i:nth-child(3n+3){
 	z-index: 100;
 	padding: 0 20px;
 }
-.banner .content h2{
+.banner_section .content h2{
 	font-size: clamp(2em, 5vw, 4em);
 	margin-bottom: 0.5em;
 }
@@ -279,11 +300,11 @@ i:nth-child(3n+3){
 	color: white;
 	transition: color 0.9s ease, text-shadow 0.9s ease;
 }
-.banner .side_text a:hover {
+.banner_section .side_text a:hover {
 	color: #b088f9;
 	text-shadow: 0 0 10px #b088f9;
 }
-.banner .content .model{
+.banner_section .content .model{
 	width: 100%;
 	height: 88vh;
 	position: absolute;
@@ -300,17 +321,114 @@ i:nth-child(3n+3){
 	object-fit: contain;
 }
 
+
+
+
+
+
+
+
+
+.section_split{
+	z-index: 100;
+	display: block;
+	background-color: white;
+	height: 100vh;
+}
+@function pxToRem($pixel) {
+	@return $pixel / 16 + rem;
+}
+
+
+.reveal {
+	--progress: 0;
+	--sub-scale: 0.25;
+	--sub-opacity: 0;
+
+	height: 100dvh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	position: sticky;
+	width: 100%;
+	top: 0;
+}
+
+.reveal_heading {
+	color: var(--color-white);
+	font-size: 3vw;
+	margin: 0;
+}
+
+.reveal_subheading {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(0.5);
+	top: 50%;
+	margin: 0;
+	font-size: 4vw;
+
+	opacity: var(--sub-opacity, 0);
+	transform: translate(-50%, -50%) scale(var(--sub-scale, 0.5));
+	will-change: transform, opacity;
+}
+
+.reveal_heading_left,
+.reveal_heading_right {
+	display: inline-block;
+}
+
+.reveal_heading_left {
+	transform: translate3d(calc(var(--progress) * (-66vw + 100%) - 0.5vw), 0, 0);
+}
+
+.reveal_heading_right {
+	transform: translate3d(calc(var(--progress) * (66vw - 100%)), 0, 0);
+}
+
+.reveal_media {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	transform: scale(var(--progress));
+}
+
+.reveal_media_img {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.section_next{
+	height: 200vh;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 /* ===================================
 	5. Responsive Design - Tablet
 ====================================== */
 @media screen and (max-width: 1925px) {
-	.banner .slider{
+	.banner_section .slider{
 		width: 160px;
 		height: 200px;
 		top: 13%;
 	}
 
-	.banner .slider .item{
+	.banner_section .slider .item{
 		transform: 
 			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
 			translateZ(350px);
@@ -319,35 +437,35 @@ i:nth-child(3n+3){
 
 
 @media screen and (max-width: 1024px) {
-	.banner{
+	.banner_section{
 		height: 85vh;
 	}
-	.banner .slider{
+	.banner_section .slider{
 		width: 160px;
 		height: 200px;
 		left: calc(50% - 80px);
 		top: 15%;
 	}
 	
-	.banner .slider .item{
+	.banner_section .slider .item{
 		transform: 
 			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
 			translateZ(300px);
 	}
 	
-	.banner .content h1{
+	.banner_section .content h1{
 		text-align: center;
 		width: 100%;
 		text-shadow: 0 10px 20px #000;
 		font-size: clamp(5em, 15vw, 10em);
 	}
 	
-	.banner .content .side_text{
+	.banner_section .content .side_text{
 		z-index: 2;
 		max-width: unset;
 		width: 100%;
 	}
-	.banner .content h2{
+	.banner_section .content h2{
 		font-size: clamp(2.5em, 6vw, 4em);
 	}
 	.model img{
@@ -363,33 +481,33 @@ i:nth-child(3n+3){
 	html {
 		font-size: 14px;
 	}
-	.banner{
+	.banner_section{
 		height: 75vh;
 	}
-	.banner .slider{
+	.banner_section .slider{
 		width: 100px;
 		height: 150px;
 		left: calc(50% - 50px);
 		top: 20%;
 	}
 	
-	.banner .slider .item{
+	.banner_section .slider .item{
 		transform: 
 			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
 			translateZ(180px);
 	}
 	
-	.banner .content h1{
+	.banner_section .content h1{
 		font-size: clamp(3em, 18vw, 6em);
 		padding: 0 10px;
 	}
-	.banner .content h1::after {
+	.banner_section .content h1::after {
 		-webkit-text-stroke: 1px #d2d2d2;
 	}
-	.banner .content .side_text{
+	.banner_section .content .side_text{
 		padding: 15px;
 	}
-	.banner .content h2{
+	.banner_section .content h2{
 		font-size: clamp(2em, 8vw, 3em);
 	}
 	.side_text p a{
@@ -398,7 +516,7 @@ i:nth-child(3n+3){
 	.model img{
 		width: 75%;
 	}
-	.banner .content{
+	.banner_section .content{
 		padding-bottom: 30px;
 	}
 	/* Reduce rain particles on mobile for performance */
@@ -412,31 +530,31 @@ i:nth-child(3n+3){
 ====================================== */
 
 @media screen and (max-width: 480px) {
-	.banner{
+	.banner_section{
 		height: 65vh;
 	}
-	.banner .slider{
+	.banner_section .slider{
 		width: 80px;
 		height: 120px;
 		left: calc(50% - 40px);
 		top: 20%;
 	}
 	
-	.banner .slider .item{
+	.banner_section .slider .item{
 		transform: 
 			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
 			translateZ(140px);
 	}
-	.banner .content{
+	.banner_section .content{
 		padding-bottom: 0;
 	}
-	.banner .content h1{
+	.banner_section .content h1{
 		font-size: clamp(2.5em, 20vw, 5em);
 	}
 	.side_text{
 		text-align: end !important;
 	}
-	.banner .slider .item img {
+	.banner_section .slider .item img {
 		border-radius: 6px;
 	}
 	.model img{
@@ -449,28 +567,28 @@ i:nth-child(3n+3){
 ====================================== */
 
 @media screen and (max-height: 600px) and (orientation: landscape) {
-	.banner .slider{
+	.banner_section .slider{
 		width: 80px;
 		height: 120px;
 		left: calc(50% - 40px);
 		top: 15%;
 	}
 	
-	.banner .slider .item{
+	.banner_section .slider .item{
 		transform: 
 			rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
 			translateZ(140px);
 	}
-	.banner .content h1{
+	.banner_section .content h1{
 		font-size: clamp(2em, 12vh, 4em);
 	}
-	.banner .content h2{
+	.banner_section .content h2{
 		font-size: clamp(1.5em, 8vh, 2.5em);
 	}
 	.side_text p a{
 		font-size: clamp(0.9em, 5vh, 1.3em);
 	}
-	.banner .content{
+	.banner_section .content{
 		flex-wrap: nowrap;
 		padding-bottom: 20px;
 	}
@@ -485,7 +603,7 @@ i:nth-child(3n+3){
 ====================================== */
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-	.banner .slider .item img {
+	.banner_section .slider .item img {
 		image-rendering: -webkit-optimize-contrast;
 		image-rendering: crisp-edges;
 	}
@@ -514,15 +632,15 @@ i:nth-child(3n+3){
 ====================================== */
 
 @media (hover: none) and (pointer: coarse) {
-	.banner .slider .item:hover img {
+	.banner_section .slider .item:hover img {
 		transform: scale(1);
 		box-shadow: none;
 	}
-	.banner .content h1:hover {
+	.banner_section .content h1:hover {
 		color: #25283B;
 		text-shadow: none;
 	}
-	.banner .side_text a:hover {
+	.banner_section .side_text a:hover {
 		color: white;
 		text-shadow: none;
 	}
